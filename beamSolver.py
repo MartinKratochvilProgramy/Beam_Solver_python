@@ -175,23 +175,22 @@ def beamSolver(pointLoads, pointMoments, linearLoads, L, Xa, Xb, J):
 
         y_max = max(F_max, M_max, q_max) * 1.2
         y_min = -max(F_max, M_max, q_max) * 1.2
-
-        ax[0].set_ylim(y_min, y_max)
+        y_abs = max(abs(y_max), abs(y_min))
 
         # VYKRESLIT SÍLY
         for n, f in enumerate(pointLoads):
             if pointLoads[n, 2] < 0:
-                ax[0].arrow(pointLoads[n, 0], -pointLoads[n, 2], 0, 10 + pointLoads[n, 2], head_width=0.5,
-                            head_length=10)
+                ax[0].arrow(pointLoads[n, 0], -pointLoads[n, 2], 0, -0.2*pointLoads[n, 2] + pointLoads[n, 2], head_width=L*0.05,
+                            head_length=-0.2*pointLoads[n, 2])
             else:
-                ax[0].arrow(pointLoads[n, 0], -pointLoads[n, 2], 0, -10 + pointLoads[n, 2], head_width=0.5,
-                            head_length=10)
+                ax[0].arrow(pointLoads[n, 0], -pointLoads[n, 2], 0, -0.2*y_abs + pointLoads[n, 2], head_width=L*0.05,
+                            head_length=0.2*y_abs)
         # VYKRESLIT MOMENTY
         for n, f in enumerate(pointMoments):
             ax[0].plot([pointMoments[n, 0], pointMoments[n, 0]], [pointMoments[n, 1], -pointMoments[n, 1]], color='red')
-            ax[0].plot([pointMoments[n, 0], pointMoments[n, 0] + L * 0.02], [pointMoments[n, 1], pointMoments[n, 1]],
+            ax[0].plot([pointMoments[n, 0], pointMoments[n, 0] + abs(pointMoments[n, 1]) * 0.005], [pointMoments[n, 1], pointMoments[n, 1]],
                        color='red')
-            ax[0].plot([pointMoments[n, 0], pointMoments[n, 0] - L * 0.02], [-pointMoments[n, 1], -pointMoments[n, 1]],
+            ax[0].plot([pointMoments[n, 0], pointMoments[n, 0] - abs(pointMoments[n, 1]) * 0.005], [-pointMoments[n, 1], -pointMoments[n, 1]],
                        color='red')
         # VYKRESLIT SPOJITÉ ZATÍŽENÍ
         for n, f in enumerate(linearLoads):
@@ -201,11 +200,13 @@ def beamSolver(pointLoads, pointMoments, linearLoads, L, Xa, Xb, J):
                                       facecolor="blue")
             ax[0].add_patch(rect)
 
-        ax[0].arrow(Xa, -20, 0, 10, head_width=0.5, head_length=10, color='red')
-        ax[0].arrow(Xb, -20, 0, 10, head_width=0.5, head_length=10, color='red')
+        ax[0].set_ylim(y_min, y_max)
+        ax[0].set_xlim([-L*0.1, L*1.1])
+        ax[0].arrow(Xa, -0.4*y_abs, 0, 0.2*y_abs, head_width=0.05*L, head_length=0.2*y_abs, color='red')
+        ax[0].arrow(Xb, -0.4*y_abs, 0, 0.2*y_abs, head_width=0.05*L, head_length=0.2*y_abs, color='red')
         ax[0].plot([L, 0], [0, 0], color='black', linewidth='2')
 
-        ax[1].plot(X, Shear)
+
         ax[1].set_title('Posouvací síla [kN]')
         ax[2].plot(X, Moment, color='red')
         ax[2].set_title('Ohybový moment [kNm]')
