@@ -208,8 +208,11 @@ def beamSolver(pointLoads, pointMoments, linearLoads, L, Xa, Xb, J):
 
 
         ax[1].set_title('Posouvací síla [kN]')
-        ax[2].plot(X, Moment, color='red')
+        ax[1].plot(X, Shear, color='blue')
+
         ax[2].set_title('Ohybový moment [kNm]')
+        ax[2].plot(X, Moment, color='red')
+
 
         ax[3].plot(X, -v)
         ax[3].set_title('Průhyb [mm]')
