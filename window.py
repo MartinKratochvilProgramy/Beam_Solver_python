@@ -16,9 +16,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
 
     def __init__(self):
-        self.pointLoads = np.empty((0,3), float)
-        self.pointMoments = np.empty((0,2), float)
-        self.linearLoads = np.empty((0,3), float)
+        self.point_loads = np.empty((0,3), float)
+        self.point_moments = np.empty((0,2), float)
+        self.linear_loads = np.empty((0,3), float)
 
         self.L = 0
         self.Xa = 0
@@ -95,10 +95,10 @@ class Ui_MainWindow(object):
 
 
         # ______________________INPUT LINEAR LOADS______________________
-        self.label_linearLoads = QtWidgets.QLabel(self.centralwidget)
-        self.label_linearLoads.setGeometry(QtCore.QRect(370, 260, 291, 61))
-        self.label_linearLoads.setFont(font)
-        self.label_linearLoads.setObjectName("label_linearLoads")
+        self.label_linear_loads = QtWidgets.QLabel(self.centralwidget)
+        self.label_linear_loads.setGeometry(QtCore.QRect(370, 260, 291, 61))
+        self.label_linear_loads.setFont(font)
+        self.label_linear_loads.setObjectName("label_linear_loads")
 
         self.label_linear_load_start = QtWidgets.QLabel(self.centralwidget)
         self.label_linear_load_start.setGeometry(QtCore.QRect(370, 320, 90, 20))
@@ -127,7 +127,7 @@ class Ui_MainWindow(object):
         self.buttonLinearLoad = QtWidgets.QPushButton(self.centralwidget)
         self.buttonLinearLoad.setGeometry(QtCore.QRect(405, 470, 120, 30))
         self.buttonLinearLoad.setObjectName("buttonLinearLoad")
-        self.buttonLinearLoad.clicked.connect(self.get_linearLoads)
+        self.buttonLinearLoad.clicked.connect(self.get_linear_loads)
 
 
         # ______________________INPUT DIMENSIONS______________________
@@ -207,7 +207,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Beam Solver"))
         self.label_forces.setText(_translate("MainWindow", "Add force"))
         self.label_moments.setText(_translate("MainWindow", "Add Moment"))
-        self.label_linearLoads.setText(_translate("MainWindow", "Add linear load"))
+        self.label_linear_loads.setText(_translate("MainWindow", "Add linear load"))
         self.label_force_x.setText(_translate("MainWindow", "x [m]"))
         self.label_force_magnitude.setText(_translate("MainWindow", "F [kN]"))
         self.label_moment_x.setText(_translate("MainWindow", "x [m]"))
@@ -240,13 +240,13 @@ class Ui_MainWindow(object):
                     y = 0
                     F = float(self.Force_magnitude.text())
                     pointLoad = np.array([[x, y, F]])
-                    self.pointLoads = np.append(self.pointLoads, pointLoad, axis=0)
-                    print("pointLoads = ")
-                    print(self.pointLoads)
-                    print("pointMoments = ")
-                    print(self.pointMoments)
-                    print("linearLoads = ")
-                    print((self.linearLoads))
+                    self.point_loads = np.append(self.point_loads, pointLoad, axis=0)
+                    print("point_loads = ")
+                    print(self.point_loads)
+                    print("point_moments = ")
+                    print(self.point_moments)
+                    print("linear_loads = ")
+                    print((self.linear_loads))
 
                     self.Force_x.clear()
                     self.Force_magnitude.clear()
@@ -265,13 +265,13 @@ class Ui_MainWindow(object):
                 if x >= 0 and x <= self.L:
                     M = float(self.Moment_magnitude.text())
                     pointMoment = np.array([[x, M]])
-                    self.pointMoments = np.append(self.pointMoments, pointMoment, axis=0)
-                    print("pointLoads = ")
-                    print(self.pointLoads)
-                    print("pointMoments = ")
-                    print(self.pointMoments)
-                    print("linearLoads = ")
-                    print((self.linearLoads))
+                    self.point_moments = np.append(self.point_moments, pointMoment, axis=0)
+                    print("point_loads = ")
+                    print(self.point_loads)
+                    print("point_moments = ")
+                    print(self.point_moments)
+                    print("linear_loads = ")
+                    print((self.linear_loads))
 
                     self.Moment_x.clear()
                     self.Moment_magnitude.clear()
@@ -282,7 +282,7 @@ class Ui_MainWindow(object):
         else:
             print("Values missing!")
 
-    def get_linearLoads(self):
+    def get_linear_loads(self):
 
         if self.LinearLoad_start_x.text() != '' and self.LinearLoad_end_x.text() != '' and self.LinearLoad_magnitude.text() != '':
             try:
@@ -293,14 +293,14 @@ class Ui_MainWindow(object):
                     q = float(self.LinearLoad_magnitude.text())
                     if x_start < x_end:
                         linearLoad = np.array([[x_start, x_end, q]])
-                        self.linearLoads = np.append(self.linearLoads, linearLoad, axis=0)
+                        self.linear_loads = np.append(self.linear_loads, linearLoad, axis=0)
 
-                        print("pointLoads = ")
-                        print(self.pointLoads)
-                        print("pointMoments = ")
-                        print(self.pointMoments)
-                        print("linearLoads = ")
-                        print((self.linearLoads))
+                        print("point_loads = ")
+                        print(self.point_loads)
+                        print("point_moments = ")
+                        print(self.point_moments)
+                        print("linear_loads = ")
+                        print((self.linear_loads))
 
                         self.LinearLoad_start_x.clear()
                         self.LinearLoad_end_x.clear()
@@ -363,26 +363,26 @@ class Ui_MainWindow(object):
 
 
     def reset_loads(self):
-        self.pointLoads = np.empty((0, 3), float)
-        self.pointMoments = np.empty((0, 2), float)
-        self.linearLoads = np.empty((0, 3), float)
+        self.point_loads = np.empty((0, 3), float)
+        self.point_moments = np.empty((0, 2), float)
+        self.linear_loads = np.empty((0, 3), float)
 
-        print("pointLoads = ")
-        print(self.pointLoads)
-        print("pointMoments = ")
-        print(self.pointMoments)
-        print("linearLoads = ")
-        print((self.linearLoads))
+        print("point_loads = ")
+        print(self.point_loads)
+        print("point_moments = ")
+        print(self.point_moments)
+        print("linear_loads = ")
+        print((self.linear_loads))
 
     def run_solver(self):
         if self.Xa > self.L or self.Xb > self.L:
             print("Support outside of beam!")
-        elif len(self.pointLoads) == 0 and len(self.pointMoments) == 0 and len(self.linearLoads) == 0:
+        elif len(self.point_loads) == 0 and len(self.point_moments) == 0 and len(self.linear_loads) == 0:
             print("Loads missing!")
         elif (self.Jz is None):
             print("Jz missing")
         else:
-            beamSolver(self.pointLoads, self.pointMoments, self.linearLoads, self.L, self.Xa, self.Xb, self.Jz)
+            beamSolver(self.point_loads, self.point_moments, self.linear_loads, self.L, self.Xa, self.Xb, self.Jz)
 
 
 

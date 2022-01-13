@@ -1,5 +1,5 @@
 #function that numerically solves initial beam
-def beamSolver(pointLoads, pointMoments, linearLoads, L, Xa, Xb, J):
+def beamSolver(point_loads, point_moments, linear_loads, L, Xa, Xb, J):
     import numpy as np
     import matplotlib.pyplot as plt
     import matplotlib.patches as mpatches
@@ -16,21 +16,19 @@ def beamSolver(pointLoads, pointMoments, linearLoads, L, Xa, Xb, J):
     fi = np.zeros(len(X))                           # vektor natočení
     v = np.zeros(len(X))                            # vektor průhybů
 
-    reactionForces = np.array([0.0, 0, 0])
-    shearForce = np.empty([0, len(X)])
-    bendingMoment = np.empty([0, len(X)])
+    reaction_forces = np.array([0.0, 0, 0])
 
     Shear = np.zeros(len(X))
     Moment = np.zeros(len(X))
 
-    supportIndexA = int(Xa / dx)
-    supportIndexB = int(Xb / dx) - 1
+    support_index_A = int(Xa / dx)
+    support_index_B = int(Xb / dx) - 1
     dFi = 0.00001                                   #krok natočení pro numerické řešení průhybů
 
     def reactions_PL(n):
-        xp = pointLoads[n, 0]                       # pozice síly
-        fx = pointLoads[n, 1]                       # horizontální složka
-        fy = pointLoads[n, 2]                       # vertikální složka
+        xp = point_loads[n, 0]                       # pozice síly
+        fx = point_loads[n, 1]                       # horizontální složka
+        fy = point_loads[n, 2]                       # vertikální složka
 
         la_p = Xa - xp                              # rameno vůči A
         mp = fy * la_p                              # moment vůči A
@@ -43,8 +41,8 @@ def beamSolver(pointLoads, pointMoments, linearLoads, L, Xa, Xb, J):
         return Ra, Rb, Ha
 
     def shear_moment_PL(n, Shear, Moment):
-        xp = pointLoads[n, 0]                       # pozice síly
-        fy = pointLoads[n, 2]                       # síla do osy y
+        xp = point_loads[n, 0]                       # pozice síly
+        fy = point_loads[n, 2]                       # síla do osy y
         Ra = PL_record[n, 0]                        # reakce v A od jednotlivých sil
         Rb = PL_record[n, 2]                        # reakce v B -||-
 
@@ -71,7 +69,7 @@ def beamSolver(pointLoads, pointMoments, linearLoads, L, Xa, Xb, J):
         return Shear, Moment
 
     def reactions_PM(n):
-        m = pointMoments[n, 1]
+        m = point_moments[n, 1]
         la_vb = Xb - Xa
 
         Rb = m / la_vb
@@ -80,8 +78,8 @@ def beamSolver(pointLoads, pointMoments, linearLoads, L, Xa, Xb, J):
         return Ra, Rb
 
     def shear_moment_PM(n, Shear, Moment):
-        xm = pointMoments[n, 0]
-        m = pointMoments[n, 1]
+        xm = point_moments[n, 0]
+        m = point_moments[n, 1]
         la_vb = Xb - Xa
 
         Rb = m / la_vb
@@ -109,9 +107,9 @@ def beamSolver(pointLoads, pointMoments, linearLoads, L, Xa, Xb, J):
         return Shear, Moment
 
     def reactions_DL(n):
-        xStart = linearLoads[n, 0]
-        xEnd = linearLoads[n, 1]
-        fy = linearLoads[n, 2]
+        xStart = linear_loads[n, 0]
+        xEnd = linear_loads[n, 1]
+        fy = linear_loads[n, 2]
 
         fy_Res = fy * (xEnd - xStart)
         x_res = xStart + 0.5 * (xEnd - xStart)
@@ -126,9 +124,9 @@ def beamSolver(pointLoads, pointMoments, linearLoads, L, Xa, Xb, J):
         return Ra, Rb
 
     def shear_moment_DL(n, Shear, Moment):
-        xStart = linearLoads[n, 0]
-        xEnd = linearLoads[n, 1]
-        fy = linearLoads[n, 2]
+        xStart = linear_loads[n, 0]
+        xEnd = linear_loads[n, 1]
+        fy = linear_loads[n, 2]
         Ra = DL_record[n, 0]
         Rb = DL_record[n, 1]
 
@@ -158,18 +156,18 @@ def beamSolver(pointLoads, pointMoments, linearLoads, L, Xa, Xb, J):
     def plot_out():
         fig, ax = plt.subplots(4, sharex=True, figsize=(12, 8))
 
-        if len(pointLoads) != 0:
-            F_max = max(abs(pointLoads[:, 2]))
+        if len(point_loads) != 0:
+            F_max = max(abs(point_loads[:, 2]))
         else:
             F_max = 0
 
-        if len(pointMoments) != 0:
-            M_max = max(abs(pointMoments[:, 1]))
+        if len(point_moments) != 0:
+            M_max = max(abs(point_moments[:, 1]))
         else:
             M_max = 0
 
-        if len(linearLoads) != 0:
-            q_max = max(abs(linearLoads[:, 2]))
+        if len(linear_loads) != 0:
+            q_max = max(abs(linear_loads[:, 2]))
         else:
             q_max = 0
 
@@ -178,23 +176,23 @@ def beamSolver(pointLoads, pointMoments, linearLoads, L, Xa, Xb, J):
         y_abs = max(abs(y_max), abs(y_min))
 
         # VYKRESLIT SÍLY
-        for n, f in enumerate(pointLoads):
-            if pointLoads[n, 2] < 0:
-                ax[0].arrow(pointLoads[n, 0], -pointLoads[n, 2], 0, -0.2*pointLoads[n, 2] + pointLoads[n, 2], head_width=L*0.05,
-                            head_length=-0.2*pointLoads[n, 2])
+        for n, f in enumerate(point_loads):
+            if point_loads[n, 2] < 0:
+                ax[0].arrow(point_loads[n, 0], -point_loads[n, 2], 0, -0.2*point_loads[n, 2] + point_loads[n, 2], head_width=L*0.05,
+                            head_length=-0.2*point_loads[n, 2])
             else:
-                ax[0].arrow(pointLoads[n, 0], -pointLoads[n, 2], 0, -0.2*y_abs + pointLoads[n, 2], head_width=L*0.05,
+                ax[0].arrow(point_loads[n, 0], -point_loads[n, 2], 0, -0.2*y_abs + point_loads[n, 2], head_width=L*0.05,
                             head_length=0.2*y_abs)
         # VYKRESLIT MOMENTY
-        for n, f in enumerate(pointMoments):
-            ax[0].plot([pointMoments[n, 0], pointMoments[n, 0]], [pointMoments[n, 1], -pointMoments[n, 1]], color='red')
-            ax[0].plot([pointMoments[n, 0], pointMoments[n, 0] + abs(pointMoments[n, 1]) * 0.005], [pointMoments[n, 1], pointMoments[n, 1]],
+        for n, f in enumerate(point_moments):
+            ax[0].plot([point_moments[n, 0], point_moments[n, 0]], [point_moments[n, 1], -point_moments[n, 1]], color='red')
+            ax[0].plot([point_moments[n, 0], point_moments[n, 0] + abs(point_moments[n, 1]) * 0.005], [point_moments[n, 1], point_moments[n, 1]],
                        color='red')
-            ax[0].plot([pointMoments[n, 0], pointMoments[n, 0] - abs(pointMoments[n, 1]) * 0.005], [-pointMoments[n, 1], -pointMoments[n, 1]],
+            ax[0].plot([point_moments[n, 0], point_moments[n, 0] - abs(point_moments[n, 1]) * 0.005], [-point_moments[n, 1], -point_moments[n, 1]],
                        color='red')
         # VYKRESLIT SPOJITÉ ZATÍŽENÍ
-        for n, f in enumerate(linearLoads):
-            rect = mpatches.Rectangle((linearLoads[n, 0], 0), linearLoads[n, 1] - linearLoads[n, 0], -linearLoads[n, 2],
+        for n, f in enumerate(linear_loads):
+            rect = mpatches.Rectangle((linear_loads[n, 0], 0), linear_loads[n, 1] - linear_loads[n, 0], -linear_loads[n, 2],
                                       # fill=False,
                                       alpha=0.1,
                                       facecolor="blue")
@@ -222,22 +220,22 @@ def beamSolver(pointLoads, pointMoments, linearLoads, L, Xa, Xb, J):
     def solve_displacements(Moment, EJ, fi_guess):
 
         # INICIALIZACE ODHADU ŘEŠENÍ
-        fi[supportIndexA] = fi_guess
+        fi[support_index_A] = fi_guess
 
         # PROJEDE NOSNÍK OD PODPORY A A SPOČTE NATOČENÍ A PRŮHYB
-        for i, m in enumerate(Moment[supportIndexA::]):
-            index = i + supportIndexA
+        for i, m in enumerate(Moment[support_index_A::]):
+            index = i + support_index_A
             if index < len(Moment) - 1:
                 fi[index + 1] = fi[index] + dx / (2 * EJ) * (Moment[index + 1] + Moment[index]) * 1000
                 v[index + 1] = v[index] + dx / 2 * (fi[index + 1] + fi[index])
 
-        err = 0 - v[supportIndexB]
+        err = 0 - v[support_index_B]
 
         #POKUD PŘED PODPOROU A JE ČÁST NOSNÍKU, PROJEDE TUTO ČÁST A SPOČTE PRŮHYBY
         if Xa != 0 and abs(err) < 0.001:
-            fi[supportIndexA-1] = fi[supportIndexA]
-            for i in range(supportIndexA - 1):
-                index = supportIndexA - i - 1
+            fi[support_index_A-1] = fi[support_index_A]
+            for i in range(support_index_A - 1):
+                index = support_index_A - i - 1
                 fi[index - 1] = fi[index] - dx / (2 * EJ) * (Moment[index] + Moment[index - 1]) * 1000
                 v[index - 1] = v[index] - dx / 2 * (fi[index] + fi[index - 1])
 
@@ -245,48 +243,48 @@ def beamSolver(pointLoads, pointMoments, linearLoads, L, Xa, Xb, J):
 
     # PROJEDE VŠECHNA ZATÍŽENÍ A SPOČTE REAKCE V PODPORÁCH OD SÍLY
     PL_record = np.empty([0, 3])
-    if (len(pointLoads) > 0):
-        for n, p in enumerate(pointLoads):
+    if (len(point_loads) > 0):
+        for n, p in enumerate(point_loads):
             Ra, Rb, Ha = reactions_PL(n)
             PL_record = np.append(PL_record, [np.array([Ra, Ha, Rb])], axis=0)
 
-            reactionForces[0] += Ra
-            reactionForces[1] += Ha
-            reactionForces[2] += Rb
+            reaction_forces[0] += Ra
+            reaction_forces[1] += Ha
+            reaction_forces[2] += Rb
 
     # PROJEDE OHYBOVÉ MOMENTY A SPOČTE REAKCE V PODPORÁCH OD MOMENTU
     PM_record = np.empty([0, 2])
-    if (len(pointMoments) > 0):
-        for n, p in enumerate(pointMoments):
+    if (len(point_moments) > 0):
+        for n, p in enumerate(point_moments):
             Ra, Rb = reactions_PM(n)
             PM_record = np.append(PM_record, [np.array([Ra, Rb])], axis=0)
 
-            reactionForces[0] += Ra
-            reactionForces[2] += Rb
+            reaction_forces[0] += Ra
+            reaction_forces[2] += Rb
 
     # PROJEDE OHYBOVÉ MOMENTY A SPOČTE REAKCE V PODPORÁCH OD SPOJITÉHO ZATÍŽENÍ
     DL_record = np.empty([0, 2])
-    if (len(linearLoads) > 0):
-        for n, p in enumerate(linearLoads):
+    if (len(linear_loads) > 0):
+        for n, p in enumerate(linear_loads):
             Ra, Rb = reactions_DL(n)
             DL_record = np.append(DL_record, [np.array([Ra, Rb])], axis=0)
 
-            reactionForces[0] += Ra
-            reactionForces[2] += Rb
+            reaction_forces[0] += Ra
+            reaction_forces[2] += Rb
 
     # SPOČTE POSOUVACÍ SÍLU A MOMENT PO DÉLCE NOSNÍKU OD SÍLY
-    if (len(pointLoads) > 0):
-        for n, p in enumerate(pointLoads):
+    if (len(point_loads) > 0):
+        for n, p in enumerate(point_loads):
             Shear, Moment = shear_moment_PL(n, Shear, Moment)
 
     # SPOČTE POSOUVACÍ SÍLU A MOMENT PO DÉLCE NOSNÍKU OD MOMENTU
-    if (len(pointMoments) > 0):
-        for n, p in enumerate(pointMoments):
+    if (len(point_moments) > 0):
+        for n, p in enumerate(point_moments):
             Shear, Moment = shear_moment_PM(n, Shear, Moment)
 
     # SPOČTE POSOUVACÍ SÍLU A MOMENT PO DÉLCE NOSNÍKU OD SPOJITÉHO ZATÍŽENÍ
-    if (len(linearLoads) > 0):
-        for n, p in enumerate(linearLoads):
+    if (len(linear_loads) > 0):
+        for n, p in enumerate(linear_loads):
             Shear, Moment = shear_moment_DL(n, Shear, Moment)
 
     fi_guess = 0.001    #odhad počátečního natočení
@@ -304,7 +302,7 @@ def beamSolver(pointLoads, pointMoments, linearLoads, L, Xa, Xb, J):
             break
 
     print(
-        f"Ra = {round(reactionForces[0], 2)} kN \t Rb = {round(reactionForces[2], 2)} kN")
+        f"Ra = {round(reaction_forces[0], 2)} kN \t Rb = {round(reaction_forces[2], 2)} kN")
     print(f"Mo_max = {round(max(Moment), 3)} kNm, Mo_min = {round(min(Moment), 3)} kNm")
 
     plot_out()
