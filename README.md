@@ -15,7 +15,7 @@ Result is a matplotlib graph with input forces and another three graphs with she
 ![image](https://user-images.githubusercontent.com/94861828/148651299-905c2f02-bc02-4626-9fcb-ba231a969bb1.png)
 
 # Disclaimer!
-Program is not inteded for commercial use, I will not be responsible for any potential failures cause by the use.
+Program is not inteded for commercial use, I will not be responsible for any potential failures caused by the use.
 
 
 
