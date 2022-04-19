@@ -1,5 +1,5 @@
-#function that numerically solves initial beam
-def beamSolver(point_loads, point_moments, linear_loads, L, Xa, Xb, J):
+#function that numericaly solves initial beam
+def beam_solver(point_loads, point_moments, linear_loads, L, Xa, Xb, J):
     import numpy as np
     import matplotlib.pyplot as plt
     import matplotlib.patches as mpatches
