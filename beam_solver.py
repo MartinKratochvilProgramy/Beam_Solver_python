@@ -1,9 +1,9 @@
-#function that numericaly solves initial beam
-def beam_solver(point_loads, point_moments, linear_loads, L, Xa, Xb, J):
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import matplotlib.patches as mpatches
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 
+def beam_solver(point_loads, point_moments, linear_loads, L, Xa, Xb, J):
+    # function that numericaly solves initial beam
 
     E = 2.1 * 10 ** 11  # Youngův modul PRO ŽELEZO
     # J = (0.2 * 0.5 ** 3) / 12  -zadává se v okně
