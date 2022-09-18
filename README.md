@@ -1,7 +1,12 @@
-# Necessary modules:
--numpy
--PyQt5
--matplotlib
+# How to use
+Install requirements by running:
+```
+pip install -r requirements.txt
+```
+Run the program by:
+```
+python main.py
+```
 
 # User instructions:
 
